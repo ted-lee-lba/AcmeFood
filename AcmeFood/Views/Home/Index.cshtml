@@ -1,0 +1,543 @@
+﻿@section styles{
+    <style>
+        .keypad{
+            padding: 5px;
+            font-size: 24px;
+        }
+        input[readonly]{
+            background-color: white !important;
+        }
+        a:hover{
+            text-decoration: none;
+        }
+        .item img {
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+        .item img:hover {
+          width: 125px;
+          height: 95px;
+        }
+
+        .itemrow {
+            padding-bottom: 10px
+        }
+        .cashdenom{
+
+        }
+        .soldout{
+            position: absolute;top: 0px;width: 100%;height: 100%;color: #FF2400;opacity: 1;z-index:99;font-weight:bold;padding-top:30px;font-size:20px
+        }
+    </style>
+}
+<div class="row text-right" style="padding-bottom: 20px">
+    <div class="row" style="padding-bottom: 5px">
+        <div class="col-md-4 col-md-offset-2">
+            <a class="btn btn-danger col-md-12" href="#" role="button" id="btnRefund">Refund</a>
+        </div>
+        <div class="col-md-4">
+            <a class="btn btn-primary col-md-12" href="#" role="button" id="btnCheckOut">Check Out</a>
+        </div>
+        <div class="col-md-2">
+            &nbsp;
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-12">
+                <input type="text" class="form-control col-md-12" style="width:100%" id="txtProductCode" readonly placeholder="Product Code to search. Touch to show keypad.">
+            </div>
+        </div>
+        <div class="row" id="s-product-list">
+            
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-12" id="cashpool">
+                <h4>Cash Denomination</h4>
+                <div class="row" style="border-top:1px Solid" id="cashTotal">
+                    <label class="col-md-5">Total</label>
+                    <label class="col-md-7 text-right" id="lblTotal">$25.25</label>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="keypad" style="display: none">
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="1">1</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="2">2</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="3">3</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="4">4</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="5">5</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="6">6</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="7">7</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="8">8</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="9">9</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="0">0</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="BKSP">DEL</a>
+            </div>
+            <div class="col-md-4 keypad">
+                <a class="btn btn-default col-md-12" href="#" role="button" data-val="HIDE">Hide</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="cart">
+                <h4>Your Cart</h4>
+                @*<div class="row itemrow">
+                    <a href="#" class="col-md-1">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </a>
+                    <label class="col-md-6">$5</label>
+                    <label class="col-md-1">1</label>
+                    <label class="col-md-4 text-right" id="lbl5d"></label>
+                </div>*@
+                <div class="row" style="border-top:1px Solid" id="CartTotal">
+                    <label class="col-md-5">Total in cart</label>
+                    <label class="col-md-7 text-right" id="lblCartTotal">$25.25</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalMsg" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">                
+                <h4 class="modal-title" id="msgtitle"></h4>
+            </div>
+            <div class="modal-body" id="msgbox">
+                
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btnYes">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btnNo">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalCheckOut" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h4 class="modal-title" id="msgtitle">Check out</h4>
+            </div>
+            <div class="modal-body" id="msgbox">
+                <div class="row">
+                    <label class="col-md-4">Payment Method</label>
+                    <label class="col-md-3" id="lblPaymethod">Cash</label>
+                    <div class="col-md-5">
+                        <button type="button" class="btn btn-primary active" id="btnCash">Cash</button>
+                        <button type="button" class="btn btn-primary" id="btnCC">Credit Card</button>
+                    </div>
+                </div>
+                <hr />
+                <div id="checkoutcash">
+                    <div class="row">
+                        <label class="col-md-8">Total Price in Cart</label>
+                        <label class="col-md-4 text-right" id="checkoutcartprice-cash">$0.00</label>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-8">Cash Paid</label>
+                        <label class="col-md-4 text-right" id="checkoutcashpaid">$0.00</label>
+                    </div>
+                </div>
+                <div id="checkoutcc">
+                    <div class="row">
+                        <label class="col-md-8">Total Price in Cart</label>
+                        <label class="col-md-4 text-right" id="checkoutcartprice-cc">$0.00</label>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-8" id="ccpercdescr">Credit Card Service Charge</label>
+                        <label class="col-md-4 text-right" id="checkoutcccharge">$0.00</label>
+                    </div>
+                    <div class="row">
+                        <label class="col-md-8">Total to be Paid</label>
+                        <label class="col-md-4 text-right" id="checkoutccpay">$0.00</label>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+                    <label class="col-md-12"><span style="text-decoration: underline">Change</span></label>
+                </div>
+                <div id="changedenom">
+                    <div class="row cashdenom">
+                        <label class="col-md-5">$5</label>
+                        <label class="col-md-2">X 5</label>
+                        <label class="col-md-5 text-right">$25.00</label>
+                    </div>
+                    <div class="row cashdenom">
+                        <label class="col-md-5">$5</label>
+                        <label class="col-md-2">X 5</label>
+                        <label class="col-md-5 text-right">$25.00</label>
+                    </div>
+                    <div class="row cashdenom">
+                        <label class="col-md-5">$5</label>
+                        <label class="col-md-2">X 5</label>
+                        <label class="col-md-5 text-right" style="text-decoration: underline">$25.00</label>
+                    </div>
+                    <div class="row cashdenom">
+                        <label class="col-md-12 text-right">$5.50</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <button type="button" class="btn btn-default" id="btnCheckOutConfirmed">Check Out</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="btnCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        var mode = 'Refund';
+        var paymethod = 'CASH';
+        $(document).ready(function () {
+            $('a[data-val]').click(function () {
+                $(this).blur();
+                if ($(this).attr('data-val') == 'BKSP') {
+                    if ($('#txtProductCode').val().length <= 0) {
+                        getProductList();
+                        return;
+                    }
+                    $('#txtProductCode').val($('#txtProductCode').val().substring(0, $('#txtProductCode').val().length - 1));
+                    getProductList();
+                    return;
+                }
+                if ($(this).attr('data-val') == 'HIDE') {
+                    $('#keypad').hide();
+                    return;
+                }
+
+                $('#txtProductCode').val($('#txtProductCode').val() + $(this).attr('data-val'));
+                getProductList();
+            });
+            $('#txtProductCode').click(function () {
+                $('#keypad').show();
+            });
+
+            $('#btnRefund').click(function () {
+                mode = 'Refund';
+                $('#msgbox').html("All the cash will be refund accordingly, are you sure to continue ?");
+                $('#msgtitle').text('Refund confirmation');
+                $('#modalMsg').modal();
+            });
+
+            $('#btnCheckOut').click(function () {
+                $('#modalCheckOut').modal();
+                $('#btnCash').click();
+            });
+
+            $('#btnYes').click(function () {
+                if (mode == 'Refund') {
+                    refund();
+                }
+            });
+
+            $('#btnCash').click(function () {
+                $(this).parent().find('button').removeClass('active');
+                $(this).addClass('active');
+                $('#lblPaymethod').text('Cash');
+                checkout('CASH');
+            });
+
+            $('#btnCC').click(function () {
+                $(this).parent().find('button').removeClass('active');
+                $(this).addClass('active');
+                $('#lblPaymethod').text('Credit Card');
+                checkout('CC');
+            });
+
+            $('#btnCheckOutConfirmed').click(function () {
+                cardNo = null;
+                if (paymethod == 'CC') {
+                    cardNo = prompt("Please enter credit card number", "1234-5678-1234-5432");
+                }
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action= "CheckOutConfirmed" })',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        "PaymentMethod": paymethod,
+                        "CreditCardNo": cardNo
+                    }),
+                    success: function (result) {
+                        $('#modalCheckOut').modal('toggle');
+
+                        updateProductList(result.Products);
+                        updateCartInfo(result.Carts);
+                        updateCashInfo(result.CashDenom);
+                    },
+                    error: function () {
+                        alert('Error');
+                    }
+
+                });
+            });
+
+
+            getProductList();
+            getMyCart();
+            resetCashPool();
+        });
+
+        function updateCartInfo(cart) {
+            grandtotal = 0;
+            $('#cart').find('.itemrow').remove();
+            for (i = 0; i < cart.length; i++) {
+                itemrow = $('<div class="row itemrow"></div>');
+                itembtn = $('<a href="#" class="col-md-1" id="btnDel" data-val="' + cart[i].ProductCode + '"><span class="glyphicon glyphicon-trash"></span></a>');
+                itemproductcode = $('<label class="col-md-5">' + cart[i].ProductCode + '</label>');
+                itemqty = $('<label class="col-md-2">X ' + cart[i].Qty + '</label>');
+                itemttlprice = $('<label class="col-md-4 text-right">$' + cart[i].TotalPrice.toFixed(2) + '</label>');
+                itemrow.append(itembtn);
+                itemrow.append(itemproductcode);
+                itemrow.append(itemqty);
+                itemrow.append(itemttlprice);
+
+                $(itemrow).insertBefore($("#CartTotal"));
+                grandtotal += cart[i].TotalPrice;
+            }
+            $('#lblCartTotal').text('$' + grandtotal.toFixed(2));
+        }
+
+        function updateItemInfo(product) {
+            //update item info
+            $('span[data-val="' + product.ProductCode + '"][name="AvailQty"]').each(function () {
+                $(this).html('Avail. Stock: ' + product.AvailableQty);
+            });
+
+            if (product.AvailableQty <= 0) {
+                overlay = $('<div class="text-center soldout">Sold Out</div>');
+                if ($('a[data-val="' + product.ProductCode + '"]').find('div').first().has(overlay).length == 0) {
+                    $('a[data-val="' + product.ProductCode + '"]').find('div').first().append(overlay);
+                }
+                $('a[data-val="' + product.ProductCode + '"]').find('img').first().css('opacity', 0.5);
+            }
+        }
+
+        function updateCashInfo(cash) {
+            grandtotal = 0;
+            $('#cashpool').find('.cashdenom').remove();
+            for (i = 0; i < cash.length; i++) {
+                cashrow = $('<div class="row cashdenom"></div>');
+                cashdescr = $('<label class="col-md-5">' + cash[i].DispDescr + '</label>');
+                cashqty = $('<label class="col-md-2">X ' + cash[i].Qty + '</label>');
+                cashttlcash = $('<label class="col-md-5 text-right">$' + cash[i].TotalCash.toFixed(2) + '</label>');
+                cashrow.append(cashdescr);
+                cashrow.append(cashqty);
+                cashrow.append(cashttlcash);
+
+                $(cashrow).insertBefore($("#cashTotal"));
+                grandtotal += cash[i].TotalCash;
+            }
+            $('#lblTotal').text('$' + grandtotal.toFixed(2));
+        }
+
+        function updateProductList(products) {
+            $('#s-product-list').html('');
+            for (i = 0; i < products.length; i++) {
+                if (i % 4 == 0) {
+                    if (i != 0) {
+                        $('#s-product-list').append(row);
+                    }
+                    row = $('<div class=\'row\'></div>');
+                }
+                itemcontainer = $('<div class=\'col-md-3 item\' style="position: relative;"></div>');
+                itemhook = $('<a href=\'#\' data-val=\'' + products[i].ProductCode + '\'></a>');
+                itemimageholder = $('<div class=\'row col-md-12 text-center imgholder\'></div>');
+                itemimage = $('<img height=\'90\' width=\'120\' src=\'' + products[i].ProductImg + '\' />');
+                itemname = $('<div class=\'row col-md-12\'><span>' + products[i].ProductName + '</span></div>');
+                itemprice = $('<div class=\'row col-md-12\'><span>Price: ' + products[i].Price.toFixed(2) + '</span></div>');
+                itemqty = $('<div class=\'row col-md-12\'><span name="AvailQty" data-val="' + products[i].ProductCode + '">Avail. Stock: ' + products[i].AvailableQty + '</span></div>');
+                hiddenproductcode = $('<input type=\'hidden\' name=\'ProductCode\' value=\'' + products[i].ProductCode + '\' />');
+                if (products[i].AvailableQty <= 0) {
+                    itemimage.css('opacity', 0.5);
+                    itemimageholder.append('<div class="text-center soldout">Sold Out</div>');
+                }
+                itemimageholder.append(itemimage);
+
+                itemhook.append(itemimageholder);
+                itemhook.append(itemname);
+                itemhook.append(itemprice);
+                itemhook.append(itemqty);
+                itemhook.append(hiddenproductcode);
+                itemcontainer.append(itemhook);
+
+                row.append(itemcontainer);
+            }
+            $('#s-product-list').append(row);
+
+            //hook product click
+            $('#s-product-list').find('a').click(function () {
+                data = $(this).find('input').serialize();
+                $.post('@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action="Add2Cart" })', data,
+                    function (result) {
+                        updateCartInfo(result.Carts);
+                        updateItemInfo(result.Product);
+
+                        $('#cart').find('a').click(function () {
+                            data = "ProductCode=" + $(this).attr('data-val') + '&uid=' + ids;
+                            $.post('@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action="DelCartItem" })', data,
+                                function (result) {
+                                    updateCartInfo(result);
+                                    updateItemInfo(result.Product);
+                                });
+                        });
+                    });
+            });
+        }
+
+        function refund() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action= "Refund" })',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    updateCashInfo(result.CashDenom);
+                },
+                error: function () {
+                    alert('Error');
+                }
+
+            });
+        }
+
+        function checkout(mode) {
+            paymethod = mode;
+            if (mode == "CASH") {
+                $('#checkoutcc').hide();
+                $('#checkoutcash').show();
+            } else if (mode == "CC") {
+                $('#checkoutcc').show();
+                $('#checkoutcash').hide();
+            }
+            $.ajax({
+                type: "POST",
+                url: '@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action= "CheckOutConfirmation" })',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    "PaymentMethod": mode
+                }),
+                success: function (result) {
+                    if (mode == "CASH") {
+                        $('#checkoutcartprice-cash').text('$' + result.TotalPrice.toFixed(2));
+                        $('#checkoutcashpaid').text('$' + result.PaymentPaid.toFixed(2));
+                    } else if (mode == "CC") {
+                        $('#checkoutcartprice-cc').text('$' + result.TotalPrice.toFixed(2));
+                        $('#ccpercdescr').text('Credit Card Service Charge (' + (result.CCChargePerc * 100).toFixed(0) + '%)');
+                        $('#checkoutcccharge').text('$' + result.CCChargeAmt.toFixed(2));
+                        $('#checkoutccpay').text('$' + (result.TotalPrice + result.CCChargeAmt).toFixed(2));
+                    }
+                    $('#changedenom').find('.cashdenom').remove();
+                    grandtotal = 0;
+                    for (i = 0; i < result.ChangeDenom.length; i++) {
+                        cashrow = $('<div class="row cashdenom"></div>');
+                        cashdescr = $('<label class="col-md-5">' + result.ChangeDenom[i].DispDescr + '</label>');
+                        cashqty = $('<label class="col-md-2">X ' + result.ChangeDenom[i].Qty + '</label>');
+                        cashttlcash = $('<label class="col-md-5 text-right">$' + result.ChangeDenom[i].TotalCash.toFixed(2) + '</label>');
+                        if (i == result.ChangeDenom.length - 1) {
+                            cashrow.css('border-bottom', '1px Solid');
+                        }
+
+                        cashrow.append(cashdescr);
+                        cashrow.append(cashqty);
+                        cashrow.append(cashttlcash);
+
+                        $('#changedenom').append(cashrow);
+                        grandtotal += result.ChangeDenom[i].TotalCash;
+                    }
+                    rowttl = $('<div class="row cashdenom"></div>');
+                    ttllabel = $('<label class="col-md-4">Total:</label>');
+                    ttlprice = $('<label class="col-md-8 text-right">$' + grandtotal.toFixed(2) + '</label>');
+                    rowttl.append(ttllabel);
+                    rowttl.append(ttlprice);
+
+                    $('#changedenom').append(rowttl);
+                },
+                error: function () {
+                    alert('Error');
+                }
+
+            });
+        }
+
+        function getProductList() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action="get" })',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    ProductCode: $('#txtProductCode').val(),
+                }),
+                success: function (result) {
+                    updateProductList(result.Products);
+                },
+                error: function () {
+                    alert('Error');
+                }
+            });
+        }
+
+        function getMyCart() {
+            $.ajax({
+                type: "GET",
+                url: '@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action= "GetCart" })',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    updateCartInfo(result.Carts);
+                },
+                error: function () {
+                    alert('Error');
+                }
+
+            });
+        }
+
+        function resetCashPool() {
+            $.ajax({
+                type: "POST",
+                url: '@Url.RouteUrl("", new { httproute = "", controller = "AcmeApi", action= "ResetCashDenom" })',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    updateCashInfo(result.CashDenom);
+                },
+                error: function () {
+                    alert('Error');
+                }
+
+            });
+        }
+    </script>
+}

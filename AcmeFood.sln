@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeFood", "AcmeFood\AcmeFood.csproj", "{E1B75079-8180-4D54-8F23-90FC270FB139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Db.Provider.InMemory", "Acme.Db.InMemoryProvider\Acme.Db.Provider.InMemory.csproj", "{ACE6F09A-7993-4C7F-B2F9-9B06B56413EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acme.Db.Provider", "Acme.Db.Provider\Acme.Db.Provider.csproj", "{07B63EEB-08CC-4006-821A-FB97AAB1EB8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1B75079-8180-4D54-8F23-90FC270FB139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1B75079-8180-4D54-8F23-90FC270FB139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1B75079-8180-4D54-8F23-90FC270FB139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1B75079-8180-4D54-8F23-90FC270FB139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACE6F09A-7993-4C7F-B2F9-9B06B56413EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACE6F09A-7993-4C7F-B2F9-9B06B56413EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACE6F09A-7993-4C7F-B2F9-9B06B56413EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACE6F09A-7993-4C7F-B2F9-9B06B56413EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07B63EEB-08CC-4006-821A-FB97AAB1EB8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07B63EEB-08CC-4006-821A-FB97AAB1EB8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07B63EEB-08CC-4006-821A-FB97AAB1EB8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07B63EEB-08CC-4006-821A-FB97AAB1EB8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
